@@ -7,6 +7,7 @@ import seaborn as sns
  #%%
 
 def create_univariate_charts(customer_data):
+
     fig, axis = plt.subplots(9, 2, figsize=(18, 35))
 
     # Age distribution (Histogram with KDE)
@@ -111,3 +112,12 @@ def create_univariate_charts(customer_data):
 
     # Remove any empty subplots (if applicable)
     fig.delaxes(axis[8, 1])
+
+def create_multivariate_charts(customer_data, cat_dimensions):
+    plt.figure(figsize= (20,20))
+    sns.heatmap(customer_data[['age','marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'day_of_week', 'poutcome', 'y']].corr(), annot=True, fmt = '.2f')
+    plt.figure(figsize=(20, 20))  # Adjust figure size
+    for i, col in enumerate(cat_dimensions, 1):
+        plt.subplot(6, 2, i)
+        sns.countplot(data=customer_data, x="y", hue=col, palette="coolwarm")
+        plt.title(f"Count Plot of y  with hue {col}")

@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from functions import create_univariate_charts
+from functions import create_univariate_charts, create_multivariate_charts
 
 pd.set_option('display.max_columns', None)
 
@@ -48,6 +48,9 @@ print(factorize_mappings)
 
 # Visualize univariate values
 create_univariate_charts(customer_data)
+
+# Visualize multivariate values
+create_multivariate_charts(customer_data, cat_dimensions)
 
 plt.tight_layout()
 plt.show()
