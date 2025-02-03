@@ -115,9 +115,35 @@ def create_univariate_charts(customer_data):
 
 def create_multivariate_charts(customer_data, cat_dimensions):
     plt.figure(figsize= (20,20))
-    sns.heatmap(customer_data[['age','marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'day_of_week', 'poutcome', 'y']].corr(), annot=True, fmt = '.2f')
+    sns.heatmap(customer_data[['age','marital', 'education', 'duration', 'campaign', 'default', 'housing', 'loan', 'contact', 'month', 'day_of_week', 'poutcome', 'y']].corr(), annot=True, fmt = '.2f')
     plt.figure(figsize=(20, 20))  # Adjust figure size
     for i, col in enumerate(cat_dimensions, 1):
         plt.subplot(6, 2, i)
         sns.countplot(data=customer_data, x="y", hue=col, palette="coolwarm")
         plt.title(f"Count Plot of y  with hue {col}")
+
+    # Analyze duration - y relationship
+    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    # Boxplot
+    sns.boxplot(ax=axes[0, 0], x=customer_data['y'], y=customer_data['duration'])
+    axes[0, 0].set_title("Boxplot of Duration by Target Variable (y)")
+    axes[0, 0].set_xlabel("Target Variable (y)")
+    axes[0, 0].set_ylabel("Duration")
+
+    # Violin Plot
+    sns.violinplot(ax=axes[0, 1], x=customer_data['y'], y=customer_data['duration'], inner="quartile")
+    axes[0, 1].set_title("Violin Plot of Duration by Target Variable (y)")
+    axes[0, 1].set_xlabel("Target Variable (y)")
+    axes[0, 1].set_ylabel("Duration")
+
+    # Histogram / KDE Plot
+    sns.histplot(ax=axes[1, 0], data=customer_data, x='duration', hue='y', kde=True, bins=30)
+    axes[1, 0].set_title("Duration Distribution by y")
+    axes[1, 0].set_xlabel("Duration")
+    axes[1, 0].set_ylabel("Frequency")
+
+    # Scatter Plot (Jittered)
+    sns.stripplot(ax=axes[1, 1], data=customer_data, x='y', y='duration', jitter=True, alpha=0.5)
+    axes[1, 1].set_title("Scatter Plot of Duration by y")
+    axes[1, 1].set_xlabel("Target Variable (y)")
+    axes[1, 1].set_ylabel("Duration")
